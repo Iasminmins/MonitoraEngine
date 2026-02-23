@@ -16,7 +16,9 @@ import {
   Sun,
   Gauge,
   Navigation,
-  Fuel
+  Fuel,
+  Menu,
+  X
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DeviceMap } from '@/components/device-map'
@@ -26,6 +28,7 @@ export default function DashboardPage() {
   const [selectedDevice, setSelectedDevice] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'online' | 'offline'>('all')
   const [darkMode, setDarkMode] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const { data: devices } = useQuery({
     queryKey: ['devices'],
@@ -77,11 +80,19 @@ export default function DashboardPage() {
         <div className="max-w-[1800px] mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-center"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+              
               <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <Activity className="w-7 h-7 text-white" />
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-2xl font-bold text-slate-900">MonitoraEngine</h1>
                 <p className="text-sm text-slate-600">Telemetria em Tempo Real</p>
               </div>
@@ -120,6 +131,73 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+      </header>
+
+      {/* MOBILE SIDEBAR MODAL */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 lg:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div className="w-80 h-full bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold">Devices</h2>
+                <button onClick={() => setMobileMenuOpen(false)}>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setFilter('all')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${
+                    filter === 'all' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  Todos
+                </button>
+                <button
+                  onClick={() => setFilter('online')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${
+                    filter === 'online' ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  Online
+                </button>
+                <button
+                  onClick={() => setFilter('offline')}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${
+                    filter === 'offline' ? 'bg-slate-600 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  Offline
+                </button>
+              </div>
+            </div>
+            <div className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-140px)]">
+              {filteredDevices.map((device) => (
+                <button
+                  key={device.device_id}
+                  onClick={() => {
+                    setSelectedDevice(device.device_id)
+                    setMobileMenuOpen(false)
+                  }}
+                  className={`w-full text-left p-3 rounded-xl transition-all ${
+                    selectedDevice === device.device_id
+                      ? 'bg-blue-50 border-2 border-blue-500'
+                      : 'bg-slate-50 border border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-semibold text-slate-900">{device.device_id}</span>
+                    <span className={`w-2 h-2 rounded-full ${device.online ? 'bg-emerald-500' : 'bg-slate-300'}`} />
+                  </div>
+                  <div className="text-xs text-slate-600">
+                    {device.last_speed?.toFixed(1) || '0.0'} km/h
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       </header>
 
       <div className="max-w-[1800px] mx-auto p-4 md:p-6">
