@@ -74,7 +74,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
       {/* HEADER */}
       <header className="bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-[1800px] mx-auto px-6 py-4">
+        <div className="max-w-[1800px] mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-4">
@@ -88,7 +88,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Search & Actions */}
-            <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-4">
               {/* Botão Economia de Combustível */}
               <Link href="/fuel-economy">
                 <button className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl hover:shadow-lg transition-all font-medium">
@@ -122,10 +122,10 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <div className="max-w-[1800px] mx-auto p-6">
-        <div className="flex gap-6">
+      <div className="max-w-[1800px] mx-auto p-4 md:p-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* SIDEBAR */}
-          <aside className="w-80 flex-shrink-0">
+          <aside className="hidden lg:block lg:w-80 lg:flex-shrink-0">
             <div className="space-y-4">
               {/* Filtros */}
               <Card className="border-slate-200 shadow-sm">
