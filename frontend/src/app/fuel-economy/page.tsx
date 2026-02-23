@@ -97,7 +97,8 @@ export default function FuelEconomyPage() {
 
   async function fetchDevices() {
     try {
-      const response = await fetch('http://localhost:8000/devices');
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_URL}/devices`);
       if (!response.ok) throw new Error('Falha ao carregar devices');
       const result = await response.json();
       setDevices(result);
@@ -112,7 +113,8 @@ export default function FuelEconomyPage() {
   async function fetchGlobalData() {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8000/fuel-analysis/dashboard?hours=24');
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_URL}/fuel-analysis/dashboard?hours=24`);
       if (!response.ok) throw new Error('Falha ao carregar dados');
       const result = await response.json();
       setGlobalData(result);
@@ -128,7 +130,8 @@ export default function FuelEconomyPage() {
   async function fetchVehicleData(deviceId: string) {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/fuel-analysis/calculate/${deviceId}?hours=24`);
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_URL}/fuel-analysis/calculate/${deviceId}?hours=24`);
       if (!response.ok) throw new Error('Falha ao carregar dados do veículo');
       const result = await response.json();
       setVehicleData(result);
