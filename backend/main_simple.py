@@ -244,6 +244,85 @@ async def get_alerts(minutes: int = 10):
     """Lista de alertas (não implementado)"""
     return []
 
+# FUEL ECONOMY ENDPOINTS
+
+@app.get("/fuel-analysis/dashboard")
+async def get_fuel_dashboard(hours: int = 24):
+    """Dashboard de economia de combustível (dados mockados)"""
+    return {
+        "current_month_cost": 15420.50,
+        "previous_month_cost": 18200.00,
+        "savings": 2779.50,
+        "savings_percent": 15.27,
+        "waste_breakdown": {
+            "idle_cost": 1250.30,
+            "idle_hours": 42.5,
+            "idle_percentage": 35.2,
+            "aggressive_cost": 980.20,
+            "aggressive_events": 156,
+            "aggressive_percentage": 27.6,
+            "route_cost": 1320.45,
+            "route_extra_km": 230.5,
+            "route_percentage": 37.2,
+            "total_waste": 3550.95
+        },
+        "top_drivers": [
+            {
+                "driver_id": "TRK-001",
+                "score": 95,
+                "avg_consumption": 8.2,
+                "harsh_events": 5,
+                "idle_hours": 2.1,
+                "estimated_waste": 120.50,
+                "rank": 1
+            },
+            {
+                "driver_id": "TRK-002",
+                "score": 88,
+                "avg_consumption": 8.8,
+                "harsh_events": 12,
+                "idle_hours": 4.2,
+                "estimated_waste": 230.80,
+                "rank": 2
+            }
+        ],
+        "critical_alerts": [
+            {
+                "device_id": "TRK-003",
+                "type": "excessive_idle",
+                "message": "Marcha lenta excessiva: 8.5h nas últimas 24h",
+                "cost": 450.20
+            }
+        ],
+        "roi_data": {
+            "payback_months": 8.5,
+            "annual_savings": 33354.00,
+            "roi_percent": 285.5,
+            "system_cost": 11680.00,
+            "monthly_savings": 2779.50
+        }
+    }
+
+@app.get("/fuel-analysis/vehicle/{device_id}")
+async def get_vehicle_analysis(device_id: str, hours: int = 24):
+    """Análise individual de veículo (dados mockados)"""
+    return {
+        "device_id": device_id,
+        "period_hours": hours,
+        "waste_breakdown": {
+            "idle_cost": 250.30,
+            "idle_hours": 8.5,
+            "idle_percentage": 35.2,
+            "aggressive_cost": 180.20,
+            "aggressive_events": 28,
+            "aggressive_percentage": 27.6,
+            "route_cost": 220.45,
+            "route_extra_km": 42.5,
+            "route_percentage": 37.2,
+            "total_waste": 650.95
+        }
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
