@@ -2,6 +2,6 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "python simulator.py --devices 5 --interval-ms 2000 --city saopaulo"
+startCommand = "python simulator.py --devices 3 --interval-ms 5000 --city saopaulo"
 restartPolicyType = "ALWAYS"
 restartPolicyMaxRetries = 999
