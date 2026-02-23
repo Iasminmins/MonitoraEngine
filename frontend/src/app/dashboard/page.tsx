@@ -198,7 +198,6 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
-      </header>
 
       <div className="max-w-[1800px] mx-auto p-4 md:p-6">
         <div className="flex flex-col lg:flex-row gap-6">
