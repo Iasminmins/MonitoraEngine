@@ -75,6 +75,11 @@ export const api = {
     return res.json()
   },
 
+  // Alias for backwards compatibility
+  async getMetricsSummary(minutes: number = 5): Promise<MetricsSummary> {
+    return this.getMetrics(minutes)
+  },
+
   async getAlerts(minutes: number = 10): Promise<Alert[]> {
     const res = await fetch(`${API_URL}/alerts?minutes=${minutes}`)
     if (!res.ok) throw new Error('Failed to fetch alerts')
